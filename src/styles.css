@@ -1,0 +1,21 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .modal-button {
+      @apply bg-slate-300 text-slate-900 w-24 px-2 py-1 rounded-xl self-center hover:bg-slate-500 disabled:text-slate-500 disabled:bg-inherit disabled:hover:bg-inherit
+    }
+
+  .popover-option {
+    @apply p-1 hover:bg-slate-500 rounded-xl
+  }
+
+  .icon-button {
+    @apply p-1.5 hover:bg-slate-600 rounded-xl
+  }
+
+  .conversation-item {
+    @apply pl-1 rounded flex items-center min-h-20 w-full hover:bg-slate-600 
+  }
+}
