@@ -396,7 +396,6 @@ export const selectAllDirrectMsgUser = createSelector(
   [selectConversations],
   convs => {
     const usersSet = new Set<string>();
-    console.log('obj key convs', Object.keys(convs));
     for(const convId of Object.keys(convs)){
       const conv = convs[convId];
       if(conv.type=='directMessage'){
@@ -409,7 +408,6 @@ export const selectAllDirrectMsgUser = createSelector(
         }
       }
     }
-    console.log('array from set:',Array.from(usersSet))
     return Array.from(usersSet);
   }
 )

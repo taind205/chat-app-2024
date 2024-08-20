@@ -23,7 +23,6 @@ export const userSlice = createSlice({
   initialState: initValue(),
   reducers: {
     addPendingUserLoad: (state,action:PayloadAction<string>) => {
-      console.log('add:',action.payload);
       state.pendingUserLoadIds.push(action.payload);
     },
     clearPendingUserLoad: (state,action:PayloadAction) => {
@@ -52,7 +51,6 @@ export const userSlice = createSlice({
         const {logout} = action.payload;
         if(logout) {
           const newValue = initValue();
-          console.log('logout -> delete all state',newValue);
           Object.assign(state,newValue); //= {...newValue};
         }
       }

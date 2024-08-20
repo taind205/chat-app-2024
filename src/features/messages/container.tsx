@@ -154,8 +154,6 @@ const ChatInput: React.FC<{ }> = ({ }) => {
     },[currentConvId])
 
     const onSend = () => {
-        if(!text && (!images || images.length==0))
-        console.log('fc.send: ', text,'; images: ',images[0]);
         dispatch(sendMessage({targetId,msg:{
             conv:currentConvId,user:selfId||'',
             cont:text,

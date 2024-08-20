@@ -109,9 +109,8 @@ export default function App({setOutput, initImg}:{setOutput:(image:File)=>void,i
     try {
       resizeImage = await resizeFile(blob) as File;
       setOutput(resizeImage);
-      console.log('resize',resizeImage)
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
   }
 

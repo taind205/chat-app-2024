@@ -12,7 +12,6 @@ export function useFetchOnlineStatus() {
     useEffect(() => {
         //Implementing the setInterval method
         const interval = setInterval(() => {
-            console.log('get onl status',allDirrectMsgUsers);
             if(isSocketConnected) dispatch(getOnlineStatus({userIds:allDirrectMsgUsers}));
         }, 20*1000);
  
@@ -31,7 +30,6 @@ export function useFetchMissingUsers() {
     useEffect(()=>{
         const interval = setInterval(() => {
             if(pendingUserLoadIds.length>0 && isSocketConnected){
-                console.log('get user data',pendingUserLoadIds);
                 dispatch(getUsersData({userIds:pendingUserLoadIds}));
                 dispatch(clearPendingUserLoad());
             }

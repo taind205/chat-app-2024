@@ -64,7 +64,7 @@ const socketMiddleware: Middleware = (store) => {
  
         // Handle disconnect event
         instance.socket.on(SocketEvent.Disconnect, (reason) => {
-            console.log(reason)
+            console.error(reason)
           store.dispatch(connectionLost());
         });
 
@@ -102,7 +102,6 @@ const socketMiddleware: Middleware = (store) => {
             store.dispatch(deleteMsg(msgId));
             store.dispatch(deleteConvMsg({convId,msgId}))
           }
-          else console.log('err when hide msg');
         })
 
         instance.socket.on(SocketEvent.newSeenMsgUser, (res)=>{

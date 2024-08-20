@@ -14,7 +14,6 @@ import { AppError } from "@/shared_components/common";
 
 export const ConversationUI: React.FC<{ }> = ({ }) => {
     const canHide = useAppSelector(selectCurrentUI)!='index';
-    console.log('ConvUI is rendering...');
 
     return (<div className={"md:flex w-full flex-col md:min-w-[320px] lg:max-w-[360px] xl:max-w-[400px] 2xl:max-w-[500px] h-full " + (canHide ? "hidden" : "")}>
                 <ConversationList/>
@@ -37,14 +36,11 @@ const ConversationList:React.FC<{}> = ({}) => {
 
     useEffect(()=>{ 
         doFirstScrollDown.current=true;
-        console.log('call uefff')
     }
     ,[])
 
     useEffect(()=>{ 
-        console.log('trigger for conv ids change');
         if(doFirstScrollDown.current==true && conversationIds.length>=10) { 
-            console.log('trigger scroll')
             doFirstScrollDown.current=false;
             firstConv_Ref.current?.scrollIntoView({ behavior: "instant", inline:"center" });
         }
@@ -56,7 +52,6 @@ const ConversationList:React.FC<{}> = ({}) => {
             behavior: "instant",
           })}
         setTimeout(()=>{ //fix bug where height == scrollHeight not trigger load conv
-            console.log('scrolltop',scrollContainer_Ref.current?.scrollTop); 
             if (scrollContainer_Ref.current?.clientHeight == scrollContainer_Ref.current?.scrollHeight) {
                 loadMoreConv();
             }
@@ -76,7 +71,6 @@ const ConversationList:React.FC<{}> = ({}) => {
     const loadMoreConv = () => {
         if(!isFetching) {
             setPos(convLoadpos); 
-            console.log('load more conv'); 
             preScrollTop.current=scrollContainer_Ref.current?.scrollTop||0;
         }
     }

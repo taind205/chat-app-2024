@@ -24,8 +24,6 @@ export const messageSlice = createSlice({
     decorateMessage: (state,action:PayloadAction<{msgIds:string[]}>)=>{
       const {msgIds} = action.payload;
       const messages = msgIds.map(id=>state.entities[id]||undefined).filter(notEmpty);
-      console.log('deco');
-      console.log(messages);
       if(messages.length<=1) { //handle when there's only 1 message
          messages[0].isHideSenderIcon=false; messages[0].isHideSenderName=false; messages[0].isShowTimeHeader=undefined;
         }

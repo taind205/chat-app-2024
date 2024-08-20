@@ -17,10 +17,9 @@ export const GoogleLoginCustomButton:React.FC<{}> = ({}) => {
     const googleLogin = useGoogleLogin({
         flow: 'auth-code',
         onSuccess: async codeResponse => {
-            console.log('codeRes',codeResponse)
             trigger(codeResponse);
         } ,
-        onError:(errRes) => console.log(errRes),
+        onError:(errRes) => console.error(errRes),
     });
 
     return(

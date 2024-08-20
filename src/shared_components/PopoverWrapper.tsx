@@ -32,7 +32,6 @@ interface PopoverProps {
 }
 
 const Popover:React.FC<PopoverProps> = ({content, onClose, triggerBtn_Ref}) => {
-    console.log('popover is rendering...')
     const [isDisplay, setIsDisplay] = useState(false);
     const popoverDivRef = useRef<HTMLDivElement>(null);
     const top_Ref = useRef(0);
@@ -50,7 +49,6 @@ const Popover:React.FC<PopoverProps> = ({content, onClose, triggerBtn_Ref}) => {
     }, []);
     const checkElementPositions = () => {
         const btnPos = getTriggerBtnCenterPosition();
-        console.log('checking pos',prevPos_Ref.current,btnPos);
         if(!prevPos_Ref.current) prevPos_Ref.current=btnPos;
         else if(prevPos_Ref.current.y!=btnPos.y||prevPos_Ref.current.x!=btnPos.x) onClose();
     };
@@ -64,15 +62,12 @@ const Popover:React.FC<PopoverProps> = ({content, onClose, triggerBtn_Ref}) => {
     }, []);
     
     const getTriggerBtnCenterPosition = () => {
-        console.log('get btn pos...');
         if (!triggerBtn_Ref.current) return {x:0,y:0};
     
         const rect = triggerBtn_Ref.current.getClientRects()[0];
     
         const centerX = rect.left + (rect.width / 2);
         const centerY = rect.top + (rect.height / 2);
-        
-        console.log("get x,y:",centerX,centerY);
     
         return { x: centerX, y: centerY };
       };
@@ -88,7 +83,6 @@ const Popover:React.FC<PopoverProps> = ({content, onClose, triggerBtn_Ref}) => {
 const getPopoverRelativeLeft = (popoverWidth: number, padding: number, posX: number, parentBCR?: DOMRect) => {
     // Get CSS left property of popover in relative to the view for correct display.
 
-    console.log('##### called getPopoverRelativeLeft');
     const parentLeft = parentBCR?.left || 0;
     const parentRight = parentBCR?.right || window.innerWidth;
     const parentSize = parentRight - parentLeft;
@@ -102,7 +96,6 @@ const getPopoverRelativeLeft = (popoverWidth: number, padding: number, posX: num
 const getPopoverRelativeTop = (popoverHeight: number, padding: number, posY: number, parentBCR?: DOMRect) => {
     // Get CSS top property of popover in relative to the view for correct display.
 
-    console.log('##### called getPopoverRelativeTop',popoverHeight,window.innerHeight);
     const parentTop = parentBCR?.top || 0;
     const parentBot = parentBCR?.bottom || window.innerHeight;
     const parentSize = parentBot - parentTop;

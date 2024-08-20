@@ -29,7 +29,7 @@ export const GlobalModal:React.FC<{}> = ({}) => {
     const {isOpen, content } = useAppSelector(state => state.app.modal);
 
     const onClose = () => dispatch(closeModal());
-    const preventDefault = (e:MouseEvent<HTMLDivElement>) => (e.stopPropagation(), console.log("click modal"));
+    const preventDefault = (e:MouseEvent<HTMLDivElement>) => e.stopPropagation();
 
     return ( isOpen && 
         <div onMouseDown={onClose} className="fixed z-30 top-0 left-0 w-screen h-screen bg-black/50 flex flex-col justify-center items-center">
@@ -198,7 +198,7 @@ const ConfirmRemoveMessageModal: React.FC<{targetMsg: Message, convId: string;}>
     const confirm = () => { 
         dispatch(closeModal());
         if(input=='removeForAll') dispatch(unsendMsg({targetId,msgId:targetMsg._id,convId:currentConvId}));
-        else if(input=='removeForSelf') dispatch(hideMsg({targetId, msgId:targetMsg._id,convId}))} //console.log(input,targetMsg._id);
+        else if(input=='removeForSelf') dispatch(hideMsg({targetId, msgId:targetMsg._id,convId}))}
 
     return(
         <> <p>Remove message...</p>
@@ -348,7 +348,6 @@ const ChangeUsernameModal: React.FC<{}> = ({}) => {
 
     const onCofirmChange = () => {
         dispatch(updateUserProfile({username:inputUsername,displayName:inputDisplayname}));
-        console.log("change name: ", {username:inputUsername,displayName:inputDisplayname});
     }
 
     return(<>
@@ -399,7 +398,7 @@ const ChangeGroupPhotoModal: React.FC<{convId:string}> = ({convId}) => {
     const {img:currentGroupPhoto} = useAppSelector(state=>selectConversationById(state,convId))||{img:undefined};
     const dispatch = useAppDispatch();
     const isLoading = useAppSelector(selectIsUpdatingConv);
-    const onCofirmChange = (img:File)=> img && (console.log(img),dispatch(makeConversationUpdate({convId, img})))
+    const onCofirmChange = (img:File)=> img && dispatch(makeConversationUpdate({convId, img}))
 
     return <AppImageUpload title='Change group photo' initImage={currentGroupPhoto} isUploading={isLoading}
         onConfirmChange={onCofirmChange}/>
@@ -409,7 +408,7 @@ const ChangeUserProfileImageModal: React.FC<{}> = ({}) => {
     const {prfImg:currentPrfImg} = useAppSelector(selectSelf)||{prfImg:''};
     const dispatch = useAppDispatch();
     const isLoading = useAppSelector(selectIsUpdatingProfile);
-    const onCofirmChange = (img:File)=> img && (console.log(img),dispatch(updateUserProfile({prfImg: img})))
+    const onCofirmChange = (img:File)=> img && dispatch(updateUserProfile({prfImg: img}))
     
     return <AppImageUpload title='Change profile image' initImage={currentPrfImg} isUploading={isLoading}
         onConfirmChange={onCofirmChange}/>

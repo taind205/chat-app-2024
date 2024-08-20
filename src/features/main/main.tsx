@@ -17,7 +17,6 @@ const darkTheme = createTheme({
 });
 
 export const UserUI: React.FC = () => {
-    console.log('main is rendering...');
     const dispatch = useDispatch();
     const self = useAppSelector(selectSelf);
 

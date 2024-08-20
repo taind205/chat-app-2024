@@ -56,7 +56,6 @@ const _SearchBar: React.FC<{type: SearchType, onSelectUser?:(user:UserObjType)=>
     useOutsideClick(rootDivComponentRef,()=>setIsSearchResultsOpen(false));
     
     const handleInputChange =  (e:ChangeEvent<HTMLInputElement>) => {
-        console.log('performing search at SearchBar component...')
         setInput(e.target.value);
         setIsSearchResultsOpen(true);
       }

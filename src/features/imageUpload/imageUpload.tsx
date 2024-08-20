@@ -11,12 +11,8 @@ export const AppImageUpload: React.FC<AppImageUploadProps> = ({title,initImage,o
     
     useEffect(()=>{
         if(initImage) {
-            console.log('initImage:',initImage)
             fetch(initImage).then((res) => res.blob()).then((myBlob) => {
                 const myFile = new File([myBlob], 'image.jpeg', {type:myBlob.type});
-                console.log('myblob: ',myBlob);
-                console.log('myfile: ',myFile);
-                console.log('blob type: ',myBlob.type)
                 setInitImgState(URL.createObjectURL(myFile));
             });
         }
