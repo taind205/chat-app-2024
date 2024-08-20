@@ -98,7 +98,7 @@ export const SearchResultContent:React.FC<{type:SearchType, searchTerm:string, o
 
     const convBtnCLN2= "pl-1 rounded flex items-center h-16 w-full hover:bg-slate-600"
 
-    const onOpenGroupChat = (convId:string) => dispatch(openConv(convId),openUI('chatMsg'));
+    const onOpenGroupChat = (convId:string) => (dispatch(openConv(convId)),dispatch(openUI('chatMsg')));
     const onOpenDirrectChat = (targetId:string) => {
         if(selfId!=targetId){
             setTargetId(targetId);

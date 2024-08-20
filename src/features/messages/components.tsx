@@ -215,7 +215,7 @@ export const ConversationUserIcon: React.FC<{ userId?: string }> = ({ userId }) 
     const user = useAppSelector(state => selectUserById(state,userId));
 
     return (<div className="self-end rounded-full relative">
-        <Image width={32} height={32} alt='App Icon' src={user?.prfImg||"/icon/defaultProfileImg.png"} />
+        <Image className="rounded-full" width={32} height={32} alt='App Icon' src={user?.prfImg||"/icon/defaultProfileImg.png"} />
     </div>
     )
 }

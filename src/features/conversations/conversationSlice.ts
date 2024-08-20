@@ -88,6 +88,7 @@ export const conversationSlice = createSlice({
       if(convId){
         const conv = state.entities[convId];
         if(conv){
+          conv.isHideFromLatestList=false;
           conv.isRemoved=false;
           if(conv.messageIds) {
             conv.messageIds.push(newMsg._id);
