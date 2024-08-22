@@ -173,7 +173,7 @@ const ChatInput: React.FC<{ }> = ({ }) => {
     }
 
     return (
-        <div className="flex flex-col">
+        <div className="flex flex-col sticky bottom-0 bg-slate-900 z-10">
             <RepMessageSection/>
             <div className="flex items-center gap-2 p-1 justify-around w-full">
                 <button onClick={openImageInput} className="icon-button"><PanoramaIcon/></button>

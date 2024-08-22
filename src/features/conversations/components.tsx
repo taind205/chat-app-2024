@@ -100,7 +100,7 @@ const ConvSeenUsers: React.FC<{ seenUser?: string[] }> = ({ seenUser }) => {
     if(!seenUser) return <></>;
     return (<div className="relative h-5" style={{ minWidth: (12 + Math.min(seenUser.length, 3) * 12) }}>
         {seenUser.slice(0, 3).map((v, i) =>
-            <div key={v} className={"absolute top-0 right-" + i * 3 + " rounded-full"}>
+            <div key={v} className="absolute top-0" style={{right:i*12}}>
                 <SeenUserIcon uid={v}/>
             </div>)}
     </div>
