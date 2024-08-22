@@ -167,11 +167,11 @@ export const ConversationIcon: React.FC<{ members:string[], scale?: number, img?
             </div>
         : usersData2 ?
             <>
-                <div className="absolute top-0 right-0 rounded-full">
-                    <Image width={40} height={40} alt='Conv Icon' src={usersData1.prfImg||DefaultProfileImg} />
+                <div className="absolute top-0 right-0">
+                    <Image className="rounded-full" width={40} height={40} alt='Conv Icon' src={usersData1.prfImg||DefaultProfileImg} />
                 </div>
-                <div className="absolute top-4 right-4 rounded-full">
-                    <Image width={40} height={40} alt='Conv Icon' src={usersData2.prfImg||DefaultProfileImg} />
+                <div className="absolute top-4 right-4">
+                    <Image className="rounded-full" width={40} height={40} alt='Conv Icon' src={usersData2.prfImg||DefaultProfileImg} />
                 </div>
             </>
             :
