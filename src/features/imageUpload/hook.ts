@@ -15,15 +15,9 @@ export function useImageInput() {
         setImages([...images, ...resized]);
     };
     
-    const removeImage = useCallback((index:number) => {
-        console.time('remove');
-        setImages(images.filter((v,i)=>i!=index))
-        console.timeEnd('remove');
-    },[])
+    const removeImage = (index:number) => setImages(images.filter((v,i)=>i!=index))
 
-    const clearImages = useCallback(() => {
-      setImages([])
-  },[images])
+    const clearImages = () => setImages([])
   
     // Function to handle upload errors
     const handleImageUploadError = (error: Error) => {
