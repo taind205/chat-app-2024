@@ -12,6 +12,8 @@ import { useDebounceEffect } from './useDebounceEffect'
 
 import 'react-image-crop/dist/ReactCrop.css'
 import { resizeFile } from '../../../utils/helperFunction'
+import RotateLeftIcon from '@mui/icons-material/RotateLeft';
+import RotateRightIcon from '@mui/icons-material/RotateRight';
 
 // This is to demonstate how to make and center a % aspect crop
 // which is a bit trickier so we use some helper functions.
@@ -139,17 +141,24 @@ export default function App({setOutput, initImg}:{setOutput:(image:File)=>void,i
   return (
     <div className="App flex flex-col items-center gap-2" style={{maxWidth:'80%'}}>
         <input className='bg-slate-600 max-w-full' type="file" accept="image/*" onChange={onSelectFile} />
-        <div className='max-w-20'>
-          <label htmlFor="rotate-input">Rotate: </label>
-          <input className='px-1 text-slate-900 max-w-full' style={{color:'black'}}
-            id="rotate-input"
-            type="number"
-            value={rotate}
-            disabled={!imgSrc}
-            onChange={(e) =>
-              setRotate(Math.min(180, Math.max(-180, Number(e.target.value))))
-            }
-          />
+        <div className='flex flex-col'>
+          <div className='max-w-20'>
+            <label htmlFor="rotate-input">Rotate: </label>
+            <div className='flex justify-center gap-2 p-2'>
+              <button onMouseDown={()=>setRotate(rotate==-180?175:Math.min(180, Math.max(-180, rotate-10)))}><RotateLeftIcon/></button>
+              <input className='px-1 text-slate-900' style={{color:'black',maxWidth:60}}
+              id="rotate-input"
+              type="number"
+              value={rotate}
+              disabled={!imgSrc}
+              onChange={(e) =>
+                setRotate(Math.min(180, Math.max(-180, Number(e.target.value))))
+              }
+            />
+              <button onMouseDown={()=>setRotate(rotate==180?-175:Math.min(180, Math.max(-180, rotate+10)))}><RotateRightIcon/></button>
+            </div>
+            
+        </div>
       </div>
       {!!imgSrc && (
         <ReactCrop
