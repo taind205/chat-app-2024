@@ -13,15 +13,17 @@ export const UserSection: React.FC<{}> = ({}) => {
     const dispatch = useAppDispatch();
     const [isOpen_EditAvt, setIsOpen_EditAvt] = useState(false);
     const self = useAppSelector(selectSelf);
-    const [triggerLogout, {isLoading:isSigningOut}] = useLogoutMutation();
+    const [triggerLogout, {data:logoutData, isLoading:isSigningOut}] = useLogoutMutation();
     const avt= self?.prfImg;
+    useEffect(()=>{
+        if(logoutData?.logout) location.reload();
+    },[logoutData])
 
     const openChangeAvatarModal = () => dispatch(openModal({content:{id:'changeAvatar',}}));
     const openChangeUsernameModal = () => dispatch(openModal({content:{id:'changeSelfUsername',}}));
     const onLogout = () => {
         dispatch(disconnectSocket(true));
         triggerLogout(true);
-        location.reload();
     }
 
     return(

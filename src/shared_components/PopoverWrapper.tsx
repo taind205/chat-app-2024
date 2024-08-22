@@ -73,10 +73,11 @@ const Popover:React.FC<PopoverProps> = ({content, onClose, triggerBtn_Ref}) => {
       };
 
     return( 
-        <div ref={popoverDivRef} style={{ left: left_Ref.current, top: top_Ref.current, visibility:isDisplay?"visible":"hidden", maxWidth:'90vw' }}
-                className="absolute rounded-xl bg-slate-600 z-20">
-                {content}
-            </div>
+        <div ref={popoverDivRef} style={{ left: left_Ref.current, top: top_Ref.current,
+            visibility:isDisplay?"visible":"hidden", maxWidth:'90vw',zIndex:50 }}
+            className="absolute rounded-xl bg-slate-600">
+            {content}
+        </div>
     )
 }
 
