@@ -1,5 +1,5 @@
 import { resizeFile } from "@/utils/helperFunction";
-import { ChangeEvent, useCallback, useEffect, useRef, useState } from "react";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
 
 export function useImageInput() {
     const [images, setImages] = useState<File[]>([]);
@@ -15,15 +15,9 @@ export function useImageInput() {
         setImages([...images, ...resized]);
     };
     
-    const removeImage = useCallback((index:number) => {
-        console.time('remove');
-        setImages(images.filter((v,i)=>i!=index))
-        console.timeEnd('remove');
-    },[])
-
-    const clearImages = useCallback(() => {
-      setImages([])
-  },[images])
+    const removeImage = (index:number) => setImages(images.filter((v,i)=>i!=index))
+    
+    const clearImages = () => setImages([])
   
     // Function to handle upload errors
     const handleImageUploadError = (error: Error) => {

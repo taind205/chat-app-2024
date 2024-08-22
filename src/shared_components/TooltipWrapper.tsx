@@ -1,9 +1,9 @@
 import React, { ReactNode, useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 
-type Props = {tooltip:ReactNode, children:ReactNode, className?:string};
+type Props = {tooltip:ReactNode, children:ReactNode, className?:string, tooltipStyle?:React.CSSProperties};
 
-const TooltipWrapper:React.FC<Props> = ({children, tooltip, className}) => {
+const TooltipWrapper:React.FC<Props> = ({children, tooltip, className, tooltipStyle}) => {
     const [isOpen, setIsOpen] = useState(false);
     const isMouseIn_Ref = useRef(false);
     const triggerDivRef = useRef<HTMLDivElement>(null);
@@ -26,16 +26,16 @@ const TooltipWrapper:React.FC<Props> = ({children, tooltip, className}) => {
         <div ref={triggerDivRef} className={className} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
           {children}
         </div>  
-        {createPortal(<>{isOpen && <Tooltip content={tooltip} triggerDivRef={triggerDivRef} onClose={()=>setIsOpen(false)}/>}</>,
+        {createPortal(<>{isOpen && <Tooltip style={tooltipStyle} content={tooltip} triggerDivRef={triggerDivRef} onClose={()=>setIsOpen(false)}/>}</>,
                 document.body
             )}
     </>
   );
 };
 
-interface TooltipProps {content:ReactNode|string, triggerDivRef:React.RefObject<HTMLDivElement>, onClose: ()=>void};
+interface TooltipProps {content:ReactNode|string, triggerDivRef:React.RefObject<HTMLDivElement>, onClose: ()=>void, style?:React.CSSProperties};
 
-const Tooltip:React.FC<TooltipProps> = ({content,triggerDivRef,onClose}) =>{
+const Tooltip:React.FC<TooltipProps> = ({content,triggerDivRef,onClose, style}) =>{
     const [isDisplay, setIsDisplay] = useState(false);
     const tooltipDivRef = useRef<HTMLDivElement>(null);
     const top_Ref = useRef(0);
@@ -73,7 +73,7 @@ const Tooltip:React.FC<TooltipProps> = ({content,triggerDivRef,onClose}) =>{
 
   return( 
     <div ref={tooltipDivRef} style={{ left: left_Ref.current, top: top_Ref.current, 
-        visibility:isDisplay?"visible":"hidden", maxWidth:'90vw', zIndex:50 }}
+        visibility:isDisplay?"visible":"hidden", maxWidth:'90vw', zIndex:50, ...style }}
         className="absolute rounded-xl bg-slate-600 py-0.5 px-2">
         {typeof content ==='string'? <p className='text-sm'>{content}</p>
         :content}

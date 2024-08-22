@@ -32,7 +32,8 @@ export const GlobalModal:React.FC<{}> = ({}) => {
     const preventDefault = (e:MouseEvent<HTMLDivElement>) => e.stopPropagation();
 
     return ( isOpen && 
-        <div onMouseDown={onClose} className="fixed z-30 top-0 left-0 w-screen h-screen bg-black/50 flex flex-col justify-center items-center">
+        <div onMouseDown={onClose} style={{zIndex:60}}
+            className="fixed top-0 left-0 w-screen h-screen bg-black/50 flex flex-col justify-center items-center">
             {content.id=="image" ? 
                 <ImageListView content={content} preventDefault={preventDefault}/>
                 :
@@ -102,7 +103,7 @@ const MediaMessageHeader:React.FC<{msgId:string}> = ({msgId}) => {
                 <ConversationUserIcon userId={message?.user} />
                 <div className="ml-1 mt-1 mb-0.5 ">{senderDisplayName}</div>
             </div>
-            <TooltipWrapper tooltip={getDateFromObjId(msgId)?.toLocaleString()}>
+            <TooltipWrapper tooltip={getDateFromObjId(msgId)?.toLocaleString()} tooltipStyle={{zIndex:70}}>
                 <p className='text-slate-400'>{getPastTime(getDateFromObjId(msgId))}</p>
             </TooltipWrapper>
         </div>)
