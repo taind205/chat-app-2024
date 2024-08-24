@@ -39,7 +39,7 @@ export const LoginPage:React.FC<{}> = ({}) => {
             Chat application by Tai Nguyen
         </div>
         <Image className="p-2" src={ChatIcon} alt='Chat app icon' height={160} width={160} quality={100}/>
-        <p>Sign in using sample user</p>
+        <p className='text-lg'>Sign in using sample user account:</p>
         <UserDropdown users={sampleUsers?.users||[]} setUser={(userId:string)=>currentUserIdRef.current=userId}/>
         <button type="submit" disabled={isFetchingSignedInUser||isSigningIn||currentUserIdRef.current==null} onClick={onLogin}
             className="flex items-center gap-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">

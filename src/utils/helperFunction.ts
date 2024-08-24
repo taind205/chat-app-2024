@@ -21,6 +21,16 @@ export function getDateFromObjId(objId: string|undefined): Date|undefined {
     return objId? new Date(parseInt(objId.substring(0, 8), 16) * 1000):undefined;
 }
 
+// For older browser
+export function toReversed<T>(array: T[]|undefined): T[]|undefined {
+  if(!array) return undefined;
+  const reversedArray: T[] = [];
+  for (let i = array.length - 1; i >= 0; i--) {
+    reversedArray.push(array[i]);
+  }
+  return reversedArray;
+}
+
 export const debounce = (func:Function, delay: number=300, initFunc?:Function) => {
     let timeout: NodeJS.Timeout;
     return (...args: unknown[]) => {

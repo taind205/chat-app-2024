@@ -141,8 +141,7 @@ export default function App({setOutput, initImg}:{setOutput:(image:File)=>void,i
   return (
     <div className="App flex flex-col items-center gap-2" style={{maxWidth:'80%'}}>
         <input className='bg-slate-600 max-w-full' type="file" accept="image/*" onChange={onSelectFile} />
-        <div className='flex flex-col'>
-          <div className='max-w-20'>
+        {imgSrc && <div className='flex flex-col max-w-20'>
             <label htmlFor="rotate-input">Rotate: </label>
             <div className='flex justify-center gap-2 p-2'>
               <button onMouseDown={()=>setRotate(rotate==-180?175:Math.min(180, Math.max(-180, rotate-10)))}><RotateLeftIcon/></button>
@@ -157,9 +156,7 @@ export default function App({setOutput, initImg}:{setOutput:(image:File)=>void,i
             />
               <button onMouseDown={()=>setRotate(rotate==180?-175:Math.min(180, Math.max(-180, rotate+10)))}><RotateRightIcon/></button>
             </div>
-            
-        </div>
-      </div>
+      </div>}
       {!!imgSrc && (
         <ReactCrop
           crop={crop}

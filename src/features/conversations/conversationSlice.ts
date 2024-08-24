@@ -1,7 +1,7 @@
 import { createAsyncThunk, createEntityAdapter, createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { Conversation, Conversation_ObjType, ConversationUpdate, DetailConversation, LoadingStatus, PartcipantUpdate, Participant, Participant_ObjT } from './entity';
 import { chatApi } from '@/api/chat.api';
-import { findAndMergeById, mergeArraysById, notEmpty, removeUndefinedProperties } from '@/utils/helperFunction';
+import { findAndMergeById, mergeArraysById, notEmpty, removeUndefinedProperties, toReversed } from '@/utils/helperFunction';
 import { RootState } from '@/store';
 import { selectAllUsers, selectSelfId, selectUserById } from '../users/userSlice';
 import { Message } from '../messages/entity';
@@ -202,7 +202,7 @@ export const conversationSlice = createSlice({
 
           let newConversation = transformConversation([conv])[0];
           //loadMsg order from server is latest to oldest, msgIds in store is from oldest to latest.
-          let newMessageIds=newConversation.messages?.map(v=>v._id).filter(notEmpty).toReversed();
+          let newMessageIds= toReversed( newConversation.messages?.map(v=>v._id).filter(notEmpty) );
           // loadMsg order is now from oldest to latest
           
           const oldConverssation = state.entities[newConversation._id];
@@ -250,13 +250,13 @@ export const conversationSlice = createSlice({
             let updatedConvId = action.meta.arg.originalArgs.cid
             
             //loadMsg order from server is latest to oldest, msgIds is from oldest to latest.
-            const newMsgIds = action.payload.messages.map(v=>v._id).toReversed();
+            const newMsgIds = toReversed( action.payload.messages.map(v=>v._id) );
             
             let msgIds = state.entities[updatedConvId]?.messageIds;
             if(!msgIds) msgIds=newMsgIds;
-            else msgIds=joinMsgIds(msgIds,newMsgIds);
+            else msgIds=joinMsgIds(msgIds,newMsgIds||[]);
 
-            state.pendingDecoratedMessageIds = newMsgIds;
+            if(newMsgIds) state.pendingDecoratedMessageIds = newMsgIds;
             conversationAdapter.updateOne(state,{id:updatedConvId, changes:{messageIds:msgIds}});
         }
       )
@@ -268,11 +268,11 @@ export const conversationSlice = createSlice({
             let updatedConvId = action.meta.arg.originalArgs.cid
             
             //loadMsg order from server is latest to oldest, msgIds is from oldest to latest.
-            const newMediaMsgIds = action.payload.messages.map(v=>v._id).toReversed();
+            const newMediaMsgIds = toReversed( action.payload.messages.map(v=>v._id) );
             
             let mediaMsgIds = state.entities[updatedConvId]?.mediaMsgIds;
             if(!mediaMsgIds) mediaMsgIds=newMediaMsgIds;
-            else mediaMsgIds=joinMsgIds(mediaMsgIds,newMediaMsgIds);
+            else mediaMsgIds=joinMsgIds(mediaMsgIds,newMediaMsgIds||[]);
             
             conversationAdapter.updateOne(state,{id:updatedConvId, changes:{mediaMsgIds:mediaMsgIds}});
         }
