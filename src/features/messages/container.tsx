@@ -28,7 +28,7 @@ export const MessageContainer: React.FC<{ }> = ({ }) => {
         "2xs:flex";
 
     return (
-        <div className={"relative hidden flex-col w-full md:min-w-[430px] lg:min-w-[430px] max-w-[700px] h-full divide-slate-500 divide-y "
+        <div className={"relative hidden flex-col w-full md:min-w-[430px] lg:min-w-[430px] max-w-[700px] h-full "
             + responsiveClassname}>
             <ChatHeader/>
             <ChatContent/>
@@ -45,7 +45,7 @@ const ChatHeader: React.FC<{}> = ({}) => {
     const showChatInfo = () => dispatch(openUI("chatInfo"));
 
     return(
-        <div className="flex sticky top-0 z-40 w-full justify-between xs:px-2">
+        <div className="flex sticky top-0 bg-slate-900 z-40 w-full justify-between xs:px-2 border-slate-500 border-b-2">
             <button onClick={goBack} className={"p-2 min-w-12 hover:bg-slate-500/50 " + " md:hidden"}>
                 <ArrowBackIcon />
             </button>
@@ -173,7 +173,7 @@ const ChatInput: React.FC<{ }> = ({ }) => {
     }
 
     return (
-        <div className="flex flex-col sticky bottom-0 bg-slate-900 z-40">
+        <div className="flex flex-col sticky bottom-0 bg-slate-900 z-40 border-slate-500 border-t-2">
             <RepMessageSection/>
             <div className="flex items-center gap-2 p-1 justify-around w-full">
                 <button onClick={openImageInput} className="icon-button"><PanoramaIcon/></button>
