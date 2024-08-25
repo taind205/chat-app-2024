@@ -1,24 +1,20 @@
 
-import { useGoogleLoginMutation } from '@/api/chat.api';
-import { GoogleLogin, GoogleOAuthProvider, useGoogleLogin } from '@react-oauth/google';
+import { CodeResponse, GoogleLogin, GoogleOAuthProvider, useGoogleLogin } from '@react-oauth/google';
 import GoogleIcon from '@/../public/icon/google_icon.png';
 import Image from 'next/image';
 
-export const GoogleOAuth:React.FC<{}> = ({}) => {
+export const GoogleOAuth:React.FC<{onLogin:(code:CodeResponse)=>void}> = ({onLogin}) => {
    
     return(
     <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_APP_CLIENT_ID||""}>
-            <GoogleLoginCustomButton/>
+            <GoogleLoginCustomButton onLogin={onLogin}/>
     </GoogleOAuthProvider>);
 }
 
-export const GoogleLoginCustomButton:React.FC<{}> = ({}) => {
-    const [trigger] = useGoogleLoginMutation()
+export const GoogleLoginCustomButton:React.FC<{onLogin:(code:CodeResponse)=>void}> = ({onLogin}) => {
     const googleLogin = useGoogleLogin({
         flow: 'auth-code',
-        onSuccess: async codeResponse => {
-            trigger(codeResponse);
-        } ,
+        onSuccess: onLogin,
         onError:(errRes) => console.error(errRes),
     });
 

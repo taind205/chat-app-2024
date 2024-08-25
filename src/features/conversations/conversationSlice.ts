@@ -168,15 +168,6 @@ export const conversationSlice = createSlice({
   },},
   extraReducers(builder) {
     builder
-        .addMatcher(
-          chatApi.endpoints.logout.matchFulfilled,
-          (state, action) => {
-            const {logout} = action.payload;
-            if(logout) {
-              Object.assign(state,initValue())
-            }
-          }
-      )
       .addMatcher(
         chatApi.endpoints.getLatestConversations.matchFulfilled,
         (state, action) => {

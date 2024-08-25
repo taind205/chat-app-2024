@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { SearchBar } from "@/features/search/search";
 import { ConversationComponent, ConversationIcon } from "./components";
-import { useGetLatestConversationsQuery, useLogoutMutation } from "@/api/chat.api";
+import { useGetLatestConversationsQuery} from "@/api/chat.api";
 import { CircularProgress } from "@mui/material";
 import { selectCurrentUI, openModal } from "@/features/main/appSlice";
 import { ConversationLoadPos, selectConversationIds, selectConversations, selectConvLoadPos } from "./conversationSlice";

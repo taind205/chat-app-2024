@@ -10,11 +10,11 @@ class SocketConnection implements SocketInterface {
   public socket: Socket;
   public socketEndpoint = process.env.NEXT_PUBLIC_SERVER_DOMAIN||"";
   // The constructor will initialize the Socket Connection
-  constructor(uid:string) {
+  constructor({token}:{token:string}) {
     this.socket = io(this.socketEndpoint, {
       auth: {
+        token
       },
-      withCredentials:true
     });
   }
 }
@@ -24,9 +24,9 @@ let socketConnection: SocketConnection | undefined;
 // The SocketFactory is responsible for creating and returning a single instance of the SocketConnection class
 // Implementing the singleton pattern
 export class SocketFactory {
-  public static init(uid:string): SocketConnection {
+  public static init({token}:{token:string}): SocketConnection {
     if (!socketConnection) {
-      socketConnection = new SocketConnection(uid);
+      socketConnection = new SocketConnection({token});
     }
     return socketConnection;
   }

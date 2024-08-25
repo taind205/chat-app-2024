@@ -1,57 +1,80 @@
+'use client'
 import React, { useEffect, useRef, useState } from 'react';
-import { User } from '../users/entity';
+import { User, UserObjType } from '../users/entity';
 import ChatIcon from '@/../public/icon/chatapp_icon.png';
 import Image from 'next/image';
 import { CircularProgress } from '@mui/material';
 import { useOutsideClick } from '@/utils/hook';
-import { useLazyGetSampleUserQuery, useLazyGetSignedInUserQuery, useLoginMutation } from '@/api/chat.api';
 import { GoogleOAuth } from './googleOAuth';
+import { CodeResponse } from '@react-oauth/google';
 
 export const LoginPage:React.FC<{}> = ({}) => {
-    const [trigger, {isLoading:isSigningIn}] = useLoginMutation();
+    const [isSigningIn, setIsSigningIn] = useState(false);
     const currentUserIdRef = useRef<string>('');
-    const [loadSampleUser, {data:sampleUsers, isFetching} ] = useLazyGetSampleUserQuery();
-    const [getSignedInUser,{isFetching:isFetchingSignedInUser}] = useLazyGetSignedInUserQuery();  
+    const [sampleUsers, setSampleUsers] = useState<UserObjType[]>([]);
+    const domain = process.env.NEXT_PUBLIC_SERVER_DOMAIN;
+    
+    const loadSampleUser = async () => {
+        if(!domain) throw new Error("Server domain is null");
+        const data = await fetch(`${domain}/users/get-sample-user`).then(async res => res.json());
+        if(data.users) setSampleUsers(data.users);
+    }
 
     useEffect(()=>{
         //Implementing the setInterval method
-        getSignedInUser(true);
-        if(!sampleUsers) {
-            loadSampleUser(undefined);
+        if(sampleUsers.length==0) {
+            loadSampleUser();
         }
         const interval = setInterval(() => {
-            if(!sampleUsers) loadSampleUser(undefined);
+            if(!sampleUsers) loadSampleUser();
         }, 2000);
  
         //Clearing the interval
         return () => clearInterval(interval);
-
     }
-    ,[sampleUsers,getSignedInUser,loadSampleUser])
+    ,[])
 
-    const onLogin = ()=>{
-        if(currentUserIdRef.current) trigger({uid:currentUserIdRef.current,password:"sampleUser"});
+    const onLogin = async ()=>{
+        if(!domain) throw new Error("Server domain is null");
+        setIsSigningIn(true);
+        const data = await fetch(`/auth/login`,{method:"POST",
+            body:JSON.stringify({uid:currentUserIdRef.current,password:"sampleUser"})})
+            .then(async res => res.json());
+        if(data.msgCode=="loginSuccess") location.reload();
     }
+
+    const onGoogleAuthLogin = async (codeResponse:Omit<CodeResponse, "error" | "error_description" | "error_uri">)=>{
+        if(!domain) throw new Error("Server domain is null");
+        setIsSigningIn(true);
+        const data = await fetch(`/auth/login`,{method:"POST",
+            body:JSON.stringify({code:codeResponse.code})})
+            .then(async res => res.json());
+        if(data.msgCode=="loginSuccess") location.reload();
+    }
+
+    const isServerInitialized=sampleUsers.length>0;
 
     return ( 
-    <div className="flex flex-col overflow-y-auto items-center bg-slate-800 gap-4 shadow-xl rounded  h-full w-full max-w-md px-4 py-8">
-        <div className="p-4 text-center text-2xl font-bold">
-            Chat application by Tai Nguyen
+        <div className="view-screen">
+            <div className="flex flex-col overflow-y-auto items-center bg-slate-800 gap-4 shadow-xl rounded  h-full w-full max-w-md px-4 py-8">
+                <div className="p-4 text-center text-2xl font-bold">
+                    Chat application by Tai Nguyen
+                </div>
+                <Image className="p-2" src={ChatIcon} alt='Chat app icon' height={160} width={160} quality={100}/>
+                <p className='text-lg'>Sign in using sample user account:</p>
+                <UserDropdown users={sampleUsers} setUser={(userId:string)=>currentUserIdRef.current=userId}/>
+                <button type="submit" disabled={isSigningIn||currentUserIdRef.current==null} onClick={onLogin}
+                    className="flex items-center gap-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                    {(!isServerInitialized||isSigningIn) && <CircularProgress size={24} />}
+                    <p>{(!isServerInitialized)?"Application server is initializing..."
+                    :isSigningIn?"Signing in...":"Sign in"}</p>
+                </button>
+                {(isServerInitialized&&!isSigningIn) && <>
+                    <p className="my-2 w-full text-slate-200 text-center">Or</p>
+                    <GoogleOAuth onLogin={onGoogleAuthLogin}/>
+                </>}
+            </div>
         </div>
-        <Image className="p-2" src={ChatIcon} alt='Chat app icon' height={160} width={160} quality={100}/>
-        <p className='text-lg'>Sign in using sample user account:</p>
-        <UserDropdown users={sampleUsers?.users||[]} setUser={(userId:string)=>currentUserIdRef.current=userId}/>
-        <button type="submit" disabled={isFetchingSignedInUser||isSigningIn||currentUserIdRef.current==null} onClick={onLogin}
-            className="flex items-center gap-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-            {(isFetchingSignedInUser||!sampleUsers||isSigningIn) && <CircularProgress size={24} />}
-            <p>{(isFetchingSignedInUser||!sampleUsers)?"Application server is initializing..."
-            :isSigningIn?"Signing in...":"Sign in"}</p>
-        </button>
-        {!(isFetchingSignedInUser||!sampleUsers||isSigningIn) && <>
-            <p className="my-2 w-full text-slate-200 text-center">Or</p>
-            <GoogleOAuth/>
-        </>}
-    </div>
    )
 }
 

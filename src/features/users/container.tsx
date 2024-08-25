@@ -1,6 +1,4 @@
 import { ReactNode, createContext, useContext, useEffect, useRef, useState } from "react";
-import { useGetLatestConversationsQuery, useLogoutMutation } from "@/api/chat.api";
-import { CircularProgress } from "@mui/material";
 import { selectCurrentUI, openModal } from "@/features/main/appSlice";
 import { useAppDispatch, useAppSelector } from "@/utils/hook";
 import { selectSelf, selectSelfId, selectUserById } from "../users/userSlice";
@@ -13,17 +11,19 @@ export const UserSection: React.FC<{}> = ({}) => {
     const dispatch = useAppDispatch();
     const [isOpen_EditAvt, setIsOpen_EditAvt] = useState(false);
     const self = useAppSelector(selectSelf);
-    const [triggerLogout, {data:logoutData, isLoading:isSigningOut}] = useLogoutMutation();
+    const triggerLogout = async ()=>{
+        const data = await fetch(`/auth/logout`,{method:"POST",
+            body:JSON.stringify({})})
+            .then(async res => res.json());
+        if(data.msgCode=="logoutSuccess") location.reload();
+    }
     const avt= self?.prfImg;
-    useEffect(()=>{
-        if(logoutData?.logout) location.reload();
-    },[logoutData])
 
     const openChangeAvatarModal = () => dispatch(openModal({content:{id:'changeAvatar',}}));
     const openChangeUsernameModal = () => dispatch(openModal({content:{id:'changeSelfUsername',}}));
     const onLogout = () => {
         dispatch(disconnectSocket(true));
-        triggerLogout(true);
+        triggerLogout();
     }
 
     return(

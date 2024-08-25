@@ -32,7 +32,7 @@ const socketSlice = createSlice({
   initialState,
   // Reducers: Functions we can call on the store
   reducers: {
-    initSocket: (state,action:PayloadAction<string>) => {
+    initSocket: (state,action:PayloadAction<{token:string}>) => {
       return;
     },
     disconnectSocket: (state,action:PayloadAction<true>) => {

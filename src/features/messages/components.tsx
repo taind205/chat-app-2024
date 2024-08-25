@@ -43,7 +43,7 @@ const NormalMessageComponent: React.FC<{data:Message}> = ({data:message}) => {
             {getDateFromObjId(message._id)?.toLocaleString()}
         </p>}
         <div onMouseEnter={() => setIsHover(true)} onMouseLeave={() => setIsHover(false)}
-            className={"relative flex m-px text-sm max-h-[360px] " + (isSelfMsg ? "flex-row-reverse" : "flex-row")}>
+            className={"relative flex m-px text-sm " + (isSelfMsg ? "flex-row-reverse" : "flex-row")}>
             {!isSelfMsg && (message.isHideSenderIcon ? <div className="min-w-8"></div> : <ConversationUserIcon userId={message?.user} />)}
             <div className={"flex flex-col ml-1 max-w-[65%] xs:max-w-[80%] "+ (isSelfMsg ? "items-end" : "")}>
                 {isUnsent?<div className="py-0.5 px-2 rounded-xl border-2 border-slate-300 bg-slate-700 text-slate-300">
@@ -164,7 +164,7 @@ const MessageContent: React.FC<{data:Message}> = ({data: msg}) => {
             {senderDisplayName+(msg.repMsg?" replied to a message...":"")}
             </div>}
         <TooltipWrapper tooltip={'Send at '+getTimeFromOID(msg._id).toLocaleString()} className={"z-10 "+(isSelfMsg&&"self-end")}>
-            <div className={"px-2 py-1 rounded-xl w-fit " + (isSelfMsg ? "bg-cyan-700 " : "bg-slate-700")}>
+            <div className={"px-2 py-1 rounded-xl w-fit max-h-[360px] overflow-auto " + (isSelfMsg ? "bg-cyan-700 " : "bg-slate-700")}>
                 <MsgImageList images={msg.media} msgId={msg._id}/>
                 <p style={(msg.media && msg.media.length>0) ? {paddingTop:4}:undefined}>{msg.cont}</p>
             </div>

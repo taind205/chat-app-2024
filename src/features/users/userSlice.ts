@@ -40,45 +40,16 @@ export const userSlice = createSlice({
         const updatedUser = {...state.self,...action.payload};
         state.self = updatedUser;
         state.value[updatedUser._id] = updatedUser;
-    }
+      }
     },
-  },
-  extraReducers(builder) {
-    builder
-    .addMatcher(
-      chatApi.endpoints.logout.matchFulfilled,
-      (state, action) => {
-        const {logout} = action.payload;
-        if(logout) {
-          const newValue = initValue();
-          Object.assign(state,newValue); //= {...newValue};
-        }
-      }
-  )
-    .addMatcher(
-      chatApi.endpoints.login.matchFulfilled,
-      (state, action) => {
-        const user = action.payload.user;
-        state.self = user;
-        state.value[user._id] = user;
-      }
-  )
-    .addMatcher(
-      chatApi.endpoints.googleLogin.matchFulfilled,
-      (state, action) => {
-        const user = action.payload.user;
-        state.self = user;
-        state.value[user._id] = user;
-      }
-  )
-  .addMatcher(
-    chatApi.endpoints.getSignedInUser.matchFulfilled,
-    (state, action) => {
+    setSelfData:(state,action:PayloadAction<User>)=>{
       const user = action.payload;
       state.self = user;
       state.value[user._id] = user;
     }
-)
+  },
+  extraReducers(builder) {
+    builder
     .addMatcher(
         chatApi.endpoints.getLatestConversations.matchFulfilled,
         (state, action) => {
@@ -117,7 +88,8 @@ export const userSlice = createSlice({
 })
 
 // Action creators are generated for each case reducer function
-export const { replaceUserData, updateSelfData, mergeUserData, addPendingUserLoad, clearPendingUserLoad } = userSlice.actions;
+export const { replaceUserData, updateSelfData, mergeUserData, addPendingUserLoad,
+  clearPendingUserLoad, setSelfData } = userSlice.actions;
 
 export default userSlice.reducer;
 

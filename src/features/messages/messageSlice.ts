@@ -72,16 +72,7 @@ export const messageSlice = createSlice({
     }
   },
   extraReducers(builder) {
-    builder 
-    .addMatcher(
-      chatApi.endpoints.logout.matchFulfilled,
-      (state, action) => {
-        const {logout} = action.payload;
-        if(logout) {
-          Object.assign(state,initValue());
-        }
-      }
-  )
+    builder
       .addMatcher(
         chatApi.endpoints.getConversation.matchFulfilled,
         (state, action) => {

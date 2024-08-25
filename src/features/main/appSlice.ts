@@ -18,18 +18,22 @@ type AppState = {
   currentUI: UIState,
   error:undefined,
   modal:ModalState,
-  notification:NotificationState
+  notification:NotificationState,
+  token:{value:string,expire:number},
 }
 
 const initValue:AppState = {currentUI:"index",error:undefined,
       modal:{isOpen:false, content:{id:"null"}},
-      notification:{isOpen:false},
+      notification:{isOpen:false},token:{value:"",expire:0},
     };
 
 export const appSlice = createSlice({
   name: 'app',
   initialState: initValue,
   reducers: {
+    setToken: (state,action:PayloadAction<{value:string,expire:number}>) => {
+      state.token=action.payload;
+    },
     openUI: (state,action:PayloadAction<UIState>) => {
         state.currentUI = action.payload;},
     openModal: (state,action:PayloadAction<{content:ModalValue}>) => {
@@ -44,6 +48,6 @@ export const appSlice = createSlice({
 export const selectCurrentUI = (state: RootState) => state.app.currentUI;
 
 // Action creators are generated for each case reducer function
-export const { openModal, closeModal, openUI } = appSlice.actions
+export const { openModal, closeModal, openUI, setToken } = appSlice.actions
 
 export default appSlice.reducer

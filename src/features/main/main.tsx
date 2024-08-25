@@ -1,7 +1,7 @@
 'use client'
 import { ConversationUI } from "@/features/conversations/container";
 import { useDispatch } from "react-redux";
-import { selectSelf, selectSelfId } from "@/features/users/userSlice";
+import { selectSelf, selectSelfId, setSelfData } from "@/features/users/userSlice";
 import { useEffect, useRef } from 'react';
 import { ChatInfo } from '@/features/conversations/ChatInfo';
 import { MessageContainer } from '@/features/messages/container';
@@ -9,29 +9,42 @@ import "@/styles.css"
 import { initSocket } from '@/features/socket/socketSlice';
 import { LoginPage } from '../auth/LoginPage';
 import { useAppDispatch, useAppSelector } from "@/utils/hook"
+import { GlobalProvider } from "./GlobalProvider";
+import { UserObjType } from "../users/entity";
+import { setToken } from "./appSlice";
 
-export const UserUI: React.FC = () => {
-    const dispatch = useDispatch();
-    const self = useAppSelector(selectSelf);
-
-    useEffect(()=>{      
-        if(self) dispatch(initSocket(self._id));
-    },[self])
-
-    const isLogin = self?true:false;
-
-    if(isLogin)
-        return (
-            <div className="p-1 sm:p-2 lg:p-4 xl:p-8 flex flex-col gap-4 items-center bg-slate-900 h-screen">
-                <div className="flex justify-center w-full h-full divide-slate-500 md:divide-x-2 divide-solid">
-                    <ConversationUI/>
-                    <MessageContainer />
-                    <ChatInfo/>
-                </div>
-            </div>)
-    else return(
-        <div className="p-1 sm:p-2 lg:p-4 xl:p-8 flex flex-col gap-4 items-center bg-slate-900 h-screen">
-            <LoginPage/>
-        </div>
+export const MainApp:React.FC<{user:UserObjType, token:{value:string,expire:number}}> = ({user,token}) => {
+    return(
+        <GlobalProvider>
+            <UserUI user={user} token={token}/>
+        </GlobalProvider>
     )
+}
+
+const UserUI: React.FC<{user:UserObjType, token:{value:string,expire:number}}> = ({user, token}) => {
+    const dispatch = useDispatch();
+    useEffect(()=>{      
+        if(!token) return;
+        dispatch(initSocket({token:token.value}));
+        dispatch(setToken(token));
+        dispatch(setSelfData(user));
+        const interval = setInterval(() => {
+            if(token.expire<Date.now()) {
+                alert("Session expired.");
+                location.reload();
+            }
+        }, 10*1000);
+ 
+        //Clearing the interval
+        return () => clearInterval(interval);
+    },[])
+
+    return (
+        <div className="view-screen">
+            <div className="flex justify-center w-full h-full divide-slate-500 md:divide-x-2 divide-solid">
+                <ConversationUI/>
+                <MessageContainer />
+                <ChatInfo/>
+            </div>
+        </div>)
 }

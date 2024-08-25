@@ -12,7 +12,7 @@ import { AppError } from "@/shared_components/common";
 import { selectSelfId, selectUserById } from "../users/userSlice";
 import { debounce, notEmpty, resizeFile } from "@/utils/helperFunction";
 import { useAppDispatch, useAppSelector } from "@/utils/hook";
-import { useImageInput } from "@/features/imageUpload/hook";
+import { useImageInput } from "@/features/image/hook";
 import { useGetConversationQuery, useGetMessagesQuery } from "@/api/chat.api";
 import { selectCurrentConversation, selectCurrentConversationMsgIds,
      selectCurrentDirrectConvUserId, selectCurrentConversationId } from "@/features/conversations/conversationSlice";
@@ -69,7 +69,7 @@ const ChatContent: React.FC<{}> = ({}) => {
     const preMsgNum = useRef(0);
     const targetId = useAppSelector(selectCurrentDirrectConvUserId);
     const {isFetching:isFetchingMsg, error:msgQueryError} = useGetMessagesQuery({cid:conversationId,mid:cursor},{skip:!cursor||!conversationId||conversationId=='temp'});
-    const {isFetching:isFetchingConv, error:convQueryError} = useGetConversationQuery({convId:conversationId},{skip:conversationId=='temp'});
+    const {isFetching:isFetchingConv, error:convQueryError} = useGetConversationQuery({convId:conversationId},{skip:!conversationId||conversationId=='temp'});
 
     useEffect(()=>{ 
         if((messageIds?.length||0)-1==preMsgNum.current || doFirstScrollDown.current) { 
