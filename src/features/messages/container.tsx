@@ -45,7 +45,7 @@ const ChatHeader: React.FC<{}> = ({}) => {
     const showChatInfo = () => dispatch(openUI("chatInfo"));
 
     return(
-        <div className="flex w-full justify-between xs:px-2">
+        <div className="flex sticky top-0 w-full justify-between xs:px-2">
             <button onClick={goBack} className={"p-2 min-w-12 hover:bg-slate-500/50 " + " md:hidden"}>
                 <ArrowBackIcon />
             </button>

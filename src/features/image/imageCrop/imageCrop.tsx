@@ -66,6 +66,24 @@ export default function App({setOutput, initImg}:{setOutput:(image:File)=>void,i
       setCrop(centerAspectCrop(width, height, aspect))
     }
   }
+  function createCanvas(width:number, height:number) {
+    // For newer browser
+    // if(OffscreenCanvas) return new OffscreenCanvas(width, height);
+    const canvas = document.createElement('canvas');
+    canvas.width = width;
+    canvas.height = height;
+    return canvas;
+  }  
+
+  function dataURLtoBlob(dataURL:string) {
+    const binaryString = window.atob(dataURL.split(',')[1]);
+    const mimeString = dataURL.split(',')[0].split(':')[1].split(';')[0];
+    const arr = new Uint8Array(binaryString.length);
+    for (let i = arr.length; i--;) {
+      arr[i] = binaryString.charCodeAt(i);
+    }
+    return new Blob([arr], { type: mimeString });
+  }
 
   async function onDownloadCropClick() {
     const image = imgRef.current
@@ -80,7 +98,7 @@ export default function App({setOutput, initImg}:{setOutput:(image:File)=>void,i
     const scaleX = image.naturalWidth / image.width
     const scaleY = image.naturalHeight / image.height
 
-    const offscreen = new OffscreenCanvas(
+    const offscreen = createCanvas(
       completedCrop.width * scaleX,
       completedCrop.height * scaleY,
     )
@@ -102,9 +120,13 @@ export default function App({setOutput, initImg}:{setOutput:(image:File)=>void,i
     )
     // You might want { type: "image/jpeg", quality: <0 to 1> } to
     // reduce image size
-    const blob = await offscreen.convertToBlob({
-      type: 'image/png'
-    })
+    const dataUrl = offscreen.toDataURL('image/png');
+    const blob = dataURLtoBlob(dataUrl);
+
+    // For newer browser
+    // const blob = await offscreen.convertToBlob({
+    //   type: 'image/png'
+    // })
 
     let resizeImage:File|null=null;
 
