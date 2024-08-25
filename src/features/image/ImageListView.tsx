@@ -43,14 +43,15 @@ export const ImageListView:React.FC<ImageListViewProps> = ({content,preventDefau
         scrollContainer_Ref.current?.scrollBy({ top: 0, left: posX-vw/2, behavior: "smooth", })
     }
     
-    return (<><div className='flex flex-col justify-center h-[80vh]'>
+    return (<><div className='flex flex-col justify-center h-[80vh] pt-3'>
             <div onMouseDown={preventDefault} className='flex flex-col items-center p-2 m-2 mt-4 bg-slate-800 rounded-xl'>
                 <MediaMessageHeader msgId={currentMsg}/>
                 <img className="object-scale-down max-h-[70vh] max-w-[80vw]"
                     src={currentImgSrc_Ref.current} alt="Image iew" sizes="70vh, 90vw" />
             </div>
         </div>
-        <div onMouseDown={preventDefault} ref={scrollContainer_Ref} className='flex flex-row py-2 min-h-24 items-center gap-1 w-full overflow-x-scroll overflow-y-hidden'>
+        <div onMouseDown={preventDefault} ref={scrollContainer_Ref} 
+            className='flex flex-row pb-2 min-h-24 items-center gap-1 w-full overflow-x-scroll overflow-y-hidden sticky bottom-0'>
             <CurrentSelectedMsg_Context.Provider value={currentMsg}>
             {mediaMsgIds?.map(v=>v!=currentMsg?<MsgImageItems key={v} msgId={v} onSelect={onSelectImg}/>
             :<MsgImageItems key={v} msgId={v} onSelect={onSelectImg} imgIdx={currentImgIdx} imgRef={currentImg_Ref} />)}
